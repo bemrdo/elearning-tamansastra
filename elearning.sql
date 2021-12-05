@@ -1,13 +1,14 @@
 -- phpMyAdmin SQL Dump
--- version 5.1.1
+-- version 5.0.1
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1
--- Generation Time: Dec 04, 2021 at 08:46 AM
--- Server version: 10.4.21-MariaDB
--- PHP Version: 8.0.12
+-- Host: localhost
+-- Waktu pembuatan: 05 Des 2021 pada 09.24
+-- Versi server: 10.4.11-MariaDB
+-- Versi PHP: 7.2.28
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
 START TRANSACTION;
 SET time_zone = "+00:00";
 
@@ -24,99 +25,92 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `guru`
+-- Struktur dari tabel `guru`
 --
 
 CREATE TABLE `guru` (
-  `id_guru` int(10) NOT NULL,
-  `id_kelas` int(20) NOT NULL,
+  `id_guru` int(11) NOT NULL,
   `nip` varchar(20) NOT NULL,
   `nama_lengkap` varchar(50) NOT NULL,
   `tempat_lahir` varchar(100) NOT NULL,
   `tanggal_lahir` date NOT NULL,
-  `mata_pelajaran` varchar(100) NOT NULL,
+  `id_kelas` int(11) NOT NULL,
+  `id_pelajaran` int(11) NOT NULL,
   `email` varchar(100) NOT NULL,
   `alamat` varchar(50) NOT NULL,
   `jenis_kelamin` enum('Laki-laki','Perempuan') NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
---
--- Dumping data for table `guru`
---
-
-INSERT INTO `guru` (`id_guru`, `id_kelas`, `nip`, `nama_lengkap`, `tempat_lahir`, `tanggal_lahir`, `mata_pelajaran`, `email`, `alamat`, `jenis_kelamin`) VALUES
-(5, 7, '224353', 'suatha', 'cc', '2021-11-12', 'bhs indonesia', 'ayusuartini2111@gmail.com', 'badung', 'Perempuan');
-
 -- --------------------------------------------------------
 
 --
--- Table structure for table `kelas`
+-- Struktur dari tabel `kelas`
 --
 
 CREATE TABLE `kelas` (
   `id_kelas` int(11) NOT NULL,
-  `kode_kelas` varchar(10) NOT NULL,
-  `nama_kelas` varchar(10) NOT NULL
+  `kode_kelas` varchar(20) NOT NULL,
+  `nama_kelas` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `kelas`
+-- Dumping data untuk tabel `kelas`
 --
 
 INSERT INTO `kelas` (`id_kelas`, `kode_kelas`, `nama_kelas`) VALUES
-(10, '12', 'IPA'),
-(11, '12', 'IPS');
+(1, '12', 'IPA'),
+(2, '13', 'IPS');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `mata_pelajaran`
+-- Struktur dari tabel `mata_pelajaran`
 --
 
 CREATE TABLE `mata_pelajaran` (
   `id_pelajaran` int(11) NOT NULL,
-  `id_kelas` varchar(20) NOT NULL,
   `nama_pelajaran` varchar(100) NOT NULL,
   `keterangan` varchar(200) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `mata_pelajaran`
+-- Dumping data untuk tabel `mata_pelajaran`
 --
 
-INSERT INTO `mata_pelajaran` (`id_pelajaran`, `id_kelas`, `nama_pelajaran`, `keterangan`) VALUES
-(3, '2', 'ipa', 'aktif');
+INSERT INTO `mata_pelajaran` (`id_pelajaran`, `nama_pelajaran`, `keterangan`) VALUES
+(3, 'ipa', 'aktif'),
+(4, 'ips', 'nonaktif');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `siswa`
+-- Struktur dari tabel `siswa`
 --
 
 CREATE TABLE `siswa` (
   `id_siswa` int(11) NOT NULL,
+  `id` int(11) NOT NULL,
   `nis` varchar(20) NOT NULL,
   `nama_lengkap` varchar(100) NOT NULL,
   `tempat_lahir` varchar(20) NOT NULL,
   `tanggal_lahir` date NOT NULL,
   `email` varchar(50) NOT NULL,
   `alamat` varchar(50) NOT NULL,
-  `id_kelas` varchar(20) NOT NULL,
+  `id_kelas` int(11) NOT NULL,
   `jenis_kelamin` enum('Laki-laki','Perempuan') NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `siswa`
+-- Dumping data untuk tabel `siswa`
 --
 
-INSERT INTO `siswa` (`id_siswa`, `nis`, `nama_lengkap`, `tempat_lahir`, `tanggal_lahir`, `email`, `alamat`, `id_kelas`, `jenis_kelamin`) VALUES
-(6, '123', 'ayu suartini', 'badung', '2021-11-12', 'ayusuartini1199@gmail.com', 'kutuh', '7', 'Laki-laki'),
-(8, '12344567', 'ayu suartini', 'kutuh', '2021-10-31', 'ayusuartini2111@gmail.com', 'kutuh', '2', 'Perempuan');
+INSERT INTO `siswa` (`id_siswa`, `id`, `nis`, `nama_lengkap`, `tempat_lahir`, `tanggal_lahir`, `email`, `alamat`, `id_kelas`, `jenis_kelamin`) VALUES
+(12, 8, '10020', 'I Putu Aris Sanjaya', 'sdfsdf', '2021-12-05', 'bemr.do@gmail.com', 'Jl. Katrangan Gg. leli No. 5, Ds. Sumerta, Kec. De', 1, 'Laki-laki');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `user`
+-- Struktur dari tabel `user`
 --
 
 CREATE TABLE `user` (
@@ -124,86 +118,108 @@ CREATE TABLE `user` (
   `username` varchar(255) NOT NULL,
   `password` varchar(255) NOT NULL,
   `email` varchar(255) NOT NULL,
-  `level` enum('admin','user') NOT NULL,
-  `blokir` enum('N','Y') NOT NULL,
-  `id_session` varchar(255) NOT NULL
+  `level` enum('admin','guru','siswa') NOT NULL,
+  `blokir` enum('N','Y') NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
--- Dumping data for table `user`
+-- Dumping data untuk tabel `user`
 --
 
-INSERT INTO `user` (`id`, `username`, `password`, `email`, `level`, `blokir`, `id_session`) VALUES
-(1, 'admin', '21232f297a57a5a743894a0e4a801fc3', 'admin@gmail.com', 'admin', 'N', ''),
-(2, 'ayu', '81dc9bdb52d04dc20036dbd8313ed055', 'ayu@gmail.com', 'admin', 'N', '');
+INSERT INTO `user` (`id`, `username`, `password`, `email`, `level`, `blokir`) VALUES
+(1, 'admin', '21232f297a57a5a743894a0e4a801fc3', 'admin@gmail.com', 'admin', 'N'),
+(8, 'admisdfas', '5e64fe04bfd8363b6c74ea86f5c867f1', 'bemr.do@gmail.com', 'siswa', 'N');
 
 --
 -- Indexes for dumped tables
 --
 
 --
--- Indexes for table `guru`
+-- Indeks untuk tabel `guru`
 --
 ALTER TABLE `guru`
-  ADD PRIMARY KEY (`id_guru`);
+  ADD PRIMARY KEY (`id_guru`),
+  ADD KEY `fk_mapel` (`id_pelajaran`),
+  ADD KEY `fk_kelas` (`id_kelas`) USING BTREE;
 
 --
--- Indexes for table `kelas`
+-- Indeks untuk tabel `kelas`
 --
 ALTER TABLE `kelas`
-  ADD PRIMARY KEY (`id_kelas`);
+  ADD PRIMARY KEY (`id_kelas`),
+  ADD UNIQUE KEY `kode_kelas` (`kode_kelas`);
 
 --
--- Indexes for table `mata_pelajaran`
+-- Indeks untuk tabel `mata_pelajaran`
 --
 ALTER TABLE `mata_pelajaran`
   ADD PRIMARY KEY (`id_pelajaran`);
 
 --
--- Indexes for table `siswa`
+-- Indeks untuk tabel `siswa`
 --
 ALTER TABLE `siswa`
-  ADD PRIMARY KEY (`id_siswa`);
+  ADD PRIMARY KEY (`id_siswa`),
+  ADD KEY `fk_kelas` (`id_kelas`),
+  ADD KEY `fk_id` (`id`);
 
 --
--- Indexes for table `user`
+-- Indeks untuk tabel `user`
 --
 ALTER TABLE `user`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `username` (`username`);
 
 --
--- AUTO_INCREMENT for dumped tables
+-- AUTO_INCREMENT untuk tabel yang dibuang
 --
 
 --
--- AUTO_INCREMENT for table `guru`
+-- AUTO_INCREMENT untuk tabel `guru`
 --
 ALTER TABLE `guru`
-  MODIFY `id_guru` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id_guru` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
--- AUTO_INCREMENT for table `kelas`
+-- AUTO_INCREMENT untuk tabel `kelas`
 --
 ALTER TABLE `kelas`
-  MODIFY `id_kelas` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id_kelas` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
--- AUTO_INCREMENT for table `mata_pelajaran`
+-- AUTO_INCREMENT untuk tabel `mata_pelajaran`
 --
 ALTER TABLE `mata_pelajaran`
-  MODIFY `id_pelajaran` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id_pelajaran` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
--- AUTO_INCREMENT for table `siswa`
+-- AUTO_INCREMENT untuk tabel `siswa`
 --
 ALTER TABLE `siswa`
-  MODIFY `id_siswa` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id_siswa` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
--- AUTO_INCREMENT for table `user`
+-- AUTO_INCREMENT untuk tabel `user`
 --
 ALTER TABLE `user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+
+--
+-- Ketidakleluasaan untuk tabel pelimpahan (Dumped Tables)
+--
+
+--
+-- Ketidakleluasaan untuk tabel `guru`
+--
+ALTER TABLE `guru`
+  ADD CONSTRAINT `fk_mapel` FOREIGN KEY (`id_pelajaran`) REFERENCES `mata_pelajaran` (`id_pelajaran`);
+
+--
+-- Ketidakleluasaan untuk tabel `siswa`
+--
+ALTER TABLE `siswa`
+  ADD CONSTRAINT `fk_id` FOREIGN KEY (`id`) REFERENCES `user` (`id`),
+  ADD CONSTRAINT `fk_kelas` FOREIGN KEY (`id_kelas`) REFERENCES `kelas` (`id_kelas`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
