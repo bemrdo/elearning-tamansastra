@@ -1,8 +1,8 @@
-<!DOCTYPE html>
+Guru<!DOCTYPE html>
 <html lang="en" dir="ltr">
   <head>
     <meta charset="utf-8">
-    <title>Admin - Kelas</title>
+    <title>Admin - Guru</title>
   </head>
   <body>
 
@@ -11,7 +11,7 @@
         <a href="<?php echo base_url('admin/dashboard')?>">Dashboard</a>
       </li>
       <li>
-        <a href="<?php echo base_url('admin/kelas')?>">Kelas</a>
+        <a href="<?php echo base_url('admin/guru')?>">Guru</a>
       </li>
       <li>
         <a href="<?php echo base_url('admin/siswa')?>">Siswa</a>
@@ -33,32 +33,32 @@
       </li>
     </ul>
 
-    <h3>Form Input Kelas</h3>
-    <form class="" action="<?php echo base_url('admin/tambah_kelas'); ?>" method="post">
-      <input type="text" name="kode_kelas" value="" placeholder="Kode Kelas">
-      <input type="text" name="nama_kelas" value="" placeholder="Nama Kelas">
-      <button type="submit" name="tambah_kelas">Simpan</button>
+    <h3>Form Input Guru</h3>
+    <form class="" action="<?php echo base_url('admin/tambah_guru'); ?>" method="post">
+      <input type="text" name="kode_guru" value="" placeholder="Kode Guru">
+      <input type="text" name="nama_guru" value="" placeholder="Nama Guru">
+      <button type="submit" name="tambah_guru">Simpan</button>
     </form>
     <br>
     <table>
       <tr>
         <th>No</th>
-        <th>Kode Kelas</th>
-        <th>Nama Kelas</th>
+        <th>Kode Guru</th>
+        <th>Nama Guru</th>
         <th colspan="2">Aksi</th>
       </tr>
       <?php
         $no = 1;
-        foreach ($kelas as $kls) { ?>
+        foreach ($guru as $kls) { ?>
           <tr>
             <td><?php echo $no++;?></td>
-            <td><?php echo $kls->kode_kelas;?></td>
-            <td><?php echo $kls->nama_kelas;?></td>
+            <td><?php echo $kls->kode_guru;?></td>
+            <td><?php echo $kls->nama_guru;?></td>
             <td>
-              <a href="<?php echo base_url('admin/kelas/edit/'.$kls->id_kelas);?>">Edit</a>
+              <a href="<?php echo base_url('admin/guru/edit/'.$kls->id_guru);?>">Edit</a>
             </td>
             <td>
-              <a href="<?php echo base_url('admin/kelas/hapus/'.$kls->id_kelas);?>">Hapus</a>
+              <a href="<?php echo base_url('admin/guru/hapus/'.$kls->id_guru);?>">Hapus</a>
             </td>
           </tr>
         <?php

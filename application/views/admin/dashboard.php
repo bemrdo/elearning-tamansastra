@@ -16,7 +16,7 @@
         <a href="<?php echo base_url('admin/siswa')?>">Siswa</a>
       </li>
       <li>
-        <a href="<?php echo base_url('admin/mata-pelajaran')?>">Mata Pelajaran</a>
+        <a href="<?php echo base_url('admin/mapel')?>">Mata Pelajaran</a>
       </li>
       <li>
         <a href="<?php echo base_url('admin/guru')?>">Guru</a>

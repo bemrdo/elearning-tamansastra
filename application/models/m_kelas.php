@@ -17,6 +17,12 @@ class M_kelas extends CI_Model
     return $this->db->get('kelas');
   }
 
+  public function edit_kelas($data)
+  {
+    $this->db->where('id_kelas', $data['id_kelas']);
+    $this->db->update('kelas', $data);
+  }
+
   public function hapus_data($id)
   {
     $this->db->where('id_kelas', $id);

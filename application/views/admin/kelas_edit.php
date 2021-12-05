@@ -17,7 +17,7 @@
         <a href="<?php echo base_url('admin/siswa')?>">Siswa</a>
       </li>
       <li>
-        <a href="<?php echo base_url('admin/mata-pelajaran')?>">Mata Pelajaran</a>
+        <a href="<?php echo base_url('admin/mapel')?>">Mata Pelajaran</a>
       </li>
       <li>
         <a href="<?php echo base_url('admin/guru')?>">Guru</a>
@@ -33,13 +33,13 @@
       </li>
     </ul>
 
-    <h3>Edit Kelas</h3>
+    <h3>Form Edit Kelas</h3>
     <form class="" action="<?php echo base_url('admin/edit_kelas'); ?>" method="post">
       <?php foreach ($edit as $edt) { ?>
       <input type="hidden" name="id_kelas" value="<?php echo $edt->id_kelas;?>" readonly>
       <input type="text" name="kode_kelas" value="<?php echo $edt->kode_kelas;?>" placeholder="Kode Kelas">
       <input type="text" name="nama_kelas" value="<?php echo $edt->nama_kelas;?>" placeholder="Nama Kelas">
-      <button type="submit" name="tambah_kelas">Simpan</button>
+      <button type="submit" name="edit_kelas">Simpan</button>
       <?php } ?>
     </form>
     <br>
@@ -61,7 +61,7 @@
               <a href="<?php echo base_url('admin/kelas/edit/'.$kls->id_kelas);?>">Edit</a>
             </td>
             <td>
-              <a href="#">Hapus</a>
+              <a href="<?php echo base_url('admin/kelas/hapus/'.$kls->id_kelas);?>">Hapus</a>
             </td>
           </tr>
         <?php
