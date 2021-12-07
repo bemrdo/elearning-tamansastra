@@ -19,6 +19,8 @@ class Admin extends CI_Controller
     $this->load->view('admin/dashboard');
   }
 
+  //  KELAS --------------------------------------------------------
+
   public function kelas($action = '', $id = '')
   {
     $data['kelas'] = $this->m_kelas->tampil_data()->result();
@@ -62,6 +64,8 @@ class Admin extends CI_Controller
     $this->m_kelas->edit_kelas($data);
     redirect('admin/kelas');
   }
+
+  //  SISWA ---------------------------------------------------------------
 
   public function siswa($action = '', $id = '')
   {
@@ -145,6 +149,8 @@ class Admin extends CI_Controller
     redirect('admin/siswa');
   }
 
+  //  MATA PELAJARAN ---------------------------------------------
+
   public function mapel($action = '', $id = '')
   {
     $data['mapel'] = $this->m_mapel->tampil_data()->result();
@@ -211,5 +217,3 @@ class Admin extends CI_Controller
     }
   }
 }
-
-?>
