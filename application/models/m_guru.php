@@ -3,7 +3,10 @@ class M_guru extends CI_Model
 {
   public function tampil_data()
   {
-    return $this->db->get('guru');
+    $this->db->select('*');
+    $this->db->from('guru');
+    $this->db->join('mata_pelajaran', 'guru.id_pelajaran = mata_pelajaran.id_pelajaran');
+    return $this->db->get();
   }
 
   public function tambah_guru($data)

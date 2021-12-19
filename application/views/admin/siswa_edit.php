@@ -23,7 +23,7 @@
         <a href="<?php echo base_url('admin/guru')?>">Guru</a>
       </li>
       <li>
-        <a href="<?php echo base_url('admin/jadwal-guru')?>">Jadwal Guru</a>
+        <a href="<?php echo base_url('admin/jadwal')?>">Jadwal</a>
       </li>
       <li>
         <a href="<?php echo base_url('admin/nilai')?>">Nilai</a>

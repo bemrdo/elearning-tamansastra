@@ -99,6 +99,7 @@ class Admin extends CI_Controller
     $user = array (
       'username' => $username,
       'password' => md5($password),
+      'nama' => $nama_lengkap,
       'level' => 'siswa',
       'email' => $email
     );
@@ -203,6 +204,7 @@ class Admin extends CI_Controller
   public function guru($action = '', $id = '')
   {
     $data['guru'] = $this->m_guru->tampil_data()->result();
+    $data['mapel'] = $this->m_mapel->tampil_data()->result();
     $data['edit'] = $this->m_guru->ambil_data($id)->result();
     if ($action == 'edit' && $id != '') {
       $this->load->view('admin/guru_edit', $data);
@@ -216,4 +218,130 @@ class Admin extends CI_Controller
       $this->load->view('admin/guru', $data);
     }
   }
+
+  public function tambah_guru()
+  {
+    $nip = $this->input->post('nip');
+    $nama_lengkap = $this->input->post('nama_lengkap');
+    $tempat_lahir = $this->input->post('tempat_lahir');
+    $tanggal_lahir = $this->input->post('tanggal_lahir');
+    $id_pelajaran = $this->input->post('id_pelajaran');
+    $email = $this->input->post('email');
+    $alamat = $this->input->post('alamat');
+    $jenis_kelamin = $this->input->post('jenis_kelamin');
+
+    $data = array (
+      'nip' => $nip,
+      'nama_lengkap' => $nama_lengkap,
+      'tempat_lahir' => $tempat_lahir,
+      'tanggal_lahir' => $tanggal_lahir,
+      'id_pelajaran' => $id_pelajaran,
+      'email' => $email,
+      'alamat' => $alamat,
+      'jenis_kelamin' => $jenis_kelamin
+    );
+
+    $this->m_guru->tambah_guru($data);
+    redirect('admin/guru');
+  }
+
+  public function edit_guru()
+  {
+    $id_guru = $this->input->post('id_guru');
+    $nip = $this->input->post('nip');
+    $nama_lengkap = $this->input->post('nama_lengkap');
+    $tempat_lahir = $this->input->post('tempat_lahir');
+    $tanggal_lahir = $this->input->post('tanggal_lahir');
+    $id_pelajaran = $this->input->post('id_pelajaran');
+    $email = $this->input->post('email');
+    $alamat = $this->input->post('alamat');
+    $jenis_kelamin = $this->input->post('jenis_kelamin');
+
+    $data = array (
+      'id_guru' => $id_guru,
+      'nip' => $nip,
+      'nama_lengkap' => $nama_lengkap,
+      'tempat_lahir' => $tempat_lahir,
+      'tanggal_lahir' => $tanggal_lahir,
+      'id_pelajaran' => $id_pelajaran,
+      'email' => $email,
+      'alamat' => $alamat,
+      'jenis_kelamin' => $jenis_kelamin
+    );
+
+    $this->m_guru->edit_guru($data);
+    redirect('admin/guru');
+  }
+
+// USER ---------------------------------------------------------
+
+  public function user($action = '', $id = '')
+  {
+    $data['user'] = $this->m_user->tampil_data()->result();
+    $data['edit'] = $this->m_user->ambil_data($id)->result();
+    if ($action == 'edit' && $id != '') {
+      $this->load->view('admin/user_edit', $data);
+    } else if ($action == 'hapus' && $id != '') {
+      $this->m_user->hapus_data($id);
+      redirect('admin/user');
+    } else if ($action == 'status' && $id != '') {
+      $this->m_user->status_data($id);
+      redirect('admin/user');
+    } else {
+      $this->load->view('admin/user', $data);
+    }
+  }
+
+  public function edit_user()
+  {
+    $id = $this->input->post('id');
+    $username = $this->input->post('username');
+    $password = $this->input->post('password');
+    $nama = $this->input->post('nama');
+    $email = $this->input->post('email');
+    $level = $this->input->post('level');
+
+    if ($password != '') {
+      $data = array (
+        'id' => $id,
+        'username' => $username,
+        'password' => md5($password),
+        'nama' => $nama,
+        'email' => $email,
+        'level' => $level,
+      );
+    } else {
+      $data = array (
+        'id' => $id,
+        'username' => $username,
+        'nama' => $nama,
+        'email' => $email,
+        'level' => $level,
+      );
+    }
+
+    $this->m_user->edit_user($data);
+    redirect('admin/user');
+  }
+
+// JADWAL ---------------------------------------------------------
+
+  public function jadwal()
+  {
+    $data['kelas'] = $this->m_kelas->tampil_data()->result();
+    $this->load->view('admin/jadwal', $data);
+  }
+
+  public function buka_jadwal()
+  {
+    $id_kelas = $this->input->post('id_kelas');
+    $data['pilih_kelas'] = $this->m_kelas->ambil_data($id_kelas)->result()[0];
+    $data['kelas'] = $this->m_kelas->tampil_data()->result();
+    $data['jadwal'] = $this->m_jadwal->tampil_data()->result();
+    $data['mapel'] = $this->m_mapel->tampil_data()->result();
+    $data['guru'] = $this->m_guru->tampil_data()->result();
+    $data['edit'] = $this->m_jadwal->ambil_data($id_kelas)->result();
+    $this->load->view('admin/jadwal_buka', $data);
+  }
+
 }

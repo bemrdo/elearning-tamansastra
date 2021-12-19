@@ -2,7 +2,7 @@
 <html lang="en" dir="ltr">
   <head>
     <meta charset="utf-8">
-    <title>Admin - Kelas</title>
+    <title>Admin - User</title>
   </head>
   <body>
 
@@ -33,32 +33,32 @@
       </li>
     </ul>
 
-    <h3>Form Input Kelas</h3>
-    <form class="" action="<?php echo base_url('admin/tambah_kelas'); ?>" method="post">
-      <input type="text" name="kode_kelas" value="" placeholder="Kode Kelas">
-      <input type="text" name="nama_kelas" value="" placeholder="Nama Kelas">
-      <button type="submit" name="tambah_kelas">Simpan</button>
-    </form>
     <br>
     <table>
       <tr>
         <th>No</th>
-        <th>Kode Kelas</th>
-        <th>Nama Kelas</th>
+        <th>Username</th>
+        <th>Nama</th>
+        <th>Email</th>
+        <th>Level</th>
+        <th>Status</th>
         <th colspan="2">Aksi</th>
       </tr>
       <?php
         $no = 1;
-        foreach ($kelas as $kls) { ?>
+        foreach ($user as $usr) { ?>
           <tr>
             <td><?php echo $no++;?></td>
-            <td><?php echo $kls->kode_kelas;?></td>
-            <td><?php echo $kls->nama_kelas;?></td>
+            <td><?php echo $usr->username;?></td>
+            <td><?php echo $usr->nama;?></td>
+            <td><?php echo $usr->email;?></td>
+            <td><?php echo $usr->level;?></td>
+            <td><?php echo ($usr->blokir == 'N') ? 'Aktif':'Nonaktif';?></td>
             <td>
-              <a href="<?php echo base_url('admin/kelas/edit/'.$kls->id_kelas);?>">Edit</a>
+              <a href="<?php echo base_url('admin/user/edit/'.$usr->id);?>">Edit</a>
             </td>
             <td>
-              <a href="<?php echo base_url('admin/kelas/hapus/'.$kls->id_kelas);?>">Hapus</a>
+              <a href="<?php echo base_url('admin/user/status/'.$usr->id);?>"><?php echo ($usr->blokir == 'N') ? 'Nonaktifkan':'Aktifkan';?></a>
             </td>
           </tr>
         <?php

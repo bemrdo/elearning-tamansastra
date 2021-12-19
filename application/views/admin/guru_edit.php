@@ -1,8 +1,8 @@
-Guru<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en" dir="ltr">
   <head>
     <meta charset="utf-8">
-    <title>Admin - Guru</title>
+    <title>Admin - Edit Guru</title>
   </head>
   <body>
 
@@ -11,7 +11,7 @@ Guru<!DOCTYPE html>
         <a href="<?php echo base_url('admin/dashboard')?>">Dashboard</a>
       </li>
       <li>
-        <a href="<?php echo base_url('admin/guru')?>">Guru</a>
+        <a href="<?php echo base_url('admin/kelas')?>">Kelas</a>
       </li>
       <li>
         <a href="<?php echo base_url('admin/siswa')?>">Siswa</a>
@@ -33,26 +33,27 @@ Guru<!DOCTYPE html>
       </li>
     </ul>
 
-    <h3>Form Input Guru</h3>
-    <form class="" action="<?php echo base_url('admin/tambah_guru'); ?>" method="post">
-      <input type="text" name="nip" value="" placeholder="NIP">
-      <input type="text" name="nama_lengkap" value="" placeholder="Nama Lengkap">
-      <input type="text" name="tempat_lahir" value="" placeholder="Tempat Lahir">
-      <input type="date" name="tanggal_lahir" value="" placeholder="Tanggal Lahir">
+    <h3>Form Edit Guru</h3>
+    <form class="" action="<?php echo base_url('admin/edit_guru'); ?>" method="post">
+      <?php foreach ($edit as $edt) { ?>
+      <input type="hidden" name="id_guru" value="<?php echo $edt->id_guru;?>" readonly>
+      <input type="text" name="nip" value="<?php echo $edt->nip;?>" placeholder="NIP">
+      <input type="text" name="nama_lengkap" value="<?php echo $edt->nama_lengkap;?>" placeholder="Nama Lengkap">
+      <input type="text" name="tempat_lahir" value="<?php echo $edt->tempat_lahir;?>" placeholder="Tempat Lahir">
+      <input type="date" name="tanggal_lahir" value="<?php echo $edt->tanggal_lahir;?>" placeholder=" Tanggal Lahir">
       <select class="" name="id_pelajaran">
-        <option value="" disabled selected>Mata Pelajaran</option>
         <?php foreach ($mapel as $mpl) { ?>
-          <option value="<?php echo $mpl->id_pelajaran ?>"><?php echo $mpl->nama_pelajaran ?></option>
+          <option value="<?php echo $mpl->id_pelajaran ?>" <?php if ($edt->id_pelajaran == $mpl->id_pelajaran) echo 'selected'?>><?php echo $mpl->nama_pelajaran ?></option>
         <?php } ?>
       </select>
-      <input type="email" name="email" value="" placeholder="Email">
-      <input type="text" name="alamat" value="" placeholder="Alamat">
+      <input type="text" name="email" value="<?php echo $edt->email;?>" placeholder="Email">
+      <input type="text" name="alamat" value="<?php echo $edt->alamat;?>" placeholder="Alamat">
       <select class="" name="jenis_kelamin">
-        <option value="" disabled selected>Jenis Kelamin</option>
-        <option value="Laki-laki">Laki-Laki</option>
-        <option value="Perempuan">Perempuan</option>
+        <option value="Laki-laki" <?php if ($edt->jenis_kelamin == "Laki-laki") {echo "selected";}?>>Laki-Laki</option>
+        <option value="Perempuan" <?php if ($edt->jenis_kelamin == "Perempuan") {echo "selected";}?>>Perempuan</option>
       </select>
-      <button type="submit" name="tambah_guru">Simpan</button>
+      <button type="submit" name="edit_kelas">Simpan</button>
+      <?php } ?>
     </form>
     <br>
     <table>
