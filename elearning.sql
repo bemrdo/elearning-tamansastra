@@ -1,227 +1,125 @@
--- phpMyAdmin SQL Dump
--- version 5.0.1
--- https://www.phpmyadmin.net/
---
--- Host: localhost
--- Waktu pembuatan: 05 Des 2021 pada 09.24
--- Versi server: 10.4.11-MariaDB
--- Versi PHP: 7.2.28
-
-SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET AUTOCOMMIT = 0;
-START TRANSACTION;
-SET time_zone = "+00:00";
-
-
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
 /*!40101 SET NAMES utf8mb4 */;
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
---
--- Database: `elearning`
---
-
--- --------------------------------------------------------
-
---
--- Struktur dari tabel `guru`
---
-
+DROP TABLE IF EXISTS `guru`;
 CREATE TABLE `guru` (
-  `id_guru` int(11) NOT NULL,
+  `id_guru` int NOT NULL AUTO_INCREMENT,
   `nip` varchar(20) NOT NULL,
   `nama_lengkap` varchar(50) NOT NULL,
   `tempat_lahir` varchar(100) NOT NULL,
   `tanggal_lahir` date NOT NULL,
-  `id_kelas` int(11) NOT NULL,
-  `id_pelajaran` int(11) NOT NULL,
+  `id_pelajaran` int NOT NULL,
   `email` varchar(100) NOT NULL,
   `alamat` varchar(50) NOT NULL,
-  `jenis_kelamin` enum('Laki-laki','Perempuan') NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `jenis_kelamin` enum('Laki-laki','Perempuan') NOT NULL,
+  PRIMARY KEY (`id_guru`),
+  KEY `fk_mapel` (`id_pelajaran`),
+  CONSTRAINT `fk_mapel` FOREIGN KEY (`id_pelajaran`) REFERENCES `mata_pelajaran` (`id_pelajaran`)
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- --------------------------------------------------------
+DROP TABLE IF EXISTS `jadwal`;
+CREATE TABLE `jadwal` (
+  `id_jadwal` int NOT NULL AUTO_INCREMENT,
+  `hari` varchar(50) NOT NULL,
+  `jam` int NOT NULL,
+  `id_kelas` int NOT NULL,
+  `id_pelajaran` int NOT NULL,
+  `id_guru` int NOT NULL,
+  PRIMARY KEY (`id_jadwal`),
+  KEY `fk_kelas` (`id_kelas`) USING BTREE,
+  KEY `id_pelajaran` (`id_pelajaran`),
+  KEY `id_guru` (`id_guru`),
+  CONSTRAINT `jadwal_ibfk_2` FOREIGN KEY (`id_pelajaran`) REFERENCES `mata_pelajaran` (`id_pelajaran`),
+  CONSTRAINT `jadwal_ibfk_3` FOREIGN KEY (`id_kelas`) REFERENCES `kelas` (`id_kelas`),
+  CONSTRAINT `jadwal_ibfk_4` FOREIGN KEY (`id_guru`) REFERENCES `guru` (`id_guru`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
---
--- Struktur dari tabel `kelas`
---
-
+DROP TABLE IF EXISTS `kelas`;
 CREATE TABLE `kelas` (
-  `id_kelas` int(11) NOT NULL,
+  `id_kelas` int NOT NULL AUTO_INCREMENT,
   `kode_kelas` varchar(20) NOT NULL,
-  `nama_kelas` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `nama_kelas` varchar(255) NOT NULL,
+  PRIMARY KEY (`id_kelas`),
+  UNIQUE KEY `kode_kelas` (`kode_kelas`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
---
--- Dumping data untuk tabel `kelas`
---
-
-INSERT INTO `kelas` (`id_kelas`, `kode_kelas`, `nama_kelas`) VALUES
-(1, '12', 'IPA'),
-(2, '13', 'IPS');
-
--- --------------------------------------------------------
-
---
--- Struktur dari tabel `mata_pelajaran`
---
-
+DROP TABLE IF EXISTS `mata_pelajaran`;
 CREATE TABLE `mata_pelajaran` (
-  `id_pelajaran` int(11) NOT NULL,
+  `id_pelajaran` int NOT NULL AUTO_INCREMENT,
   `nama_pelajaran` varchar(100) NOT NULL,
-  `keterangan` varchar(200) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `keterangan` varchar(200) NOT NULL,
+  PRIMARY KEY (`id_pelajaran`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
---
--- Dumping data untuk tabel `mata_pelajaran`
---
-
-INSERT INTO `mata_pelajaran` (`id_pelajaran`, `nama_pelajaran`, `keterangan`) VALUES
-(3, 'ipa', 'aktif'),
-(4, 'ips', 'nonaktif');
-
--- --------------------------------------------------------
-
---
--- Struktur dari tabel `siswa`
---
-
+DROP TABLE IF EXISTS `siswa`;
 CREATE TABLE `siswa` (
-  `id_siswa` int(11) NOT NULL,
-  `id` int(11) NOT NULL,
+  `id_siswa` int NOT NULL AUTO_INCREMENT,
+  `id` int NOT NULL,
   `nis` varchar(20) NOT NULL,
   `nama_lengkap` varchar(100) NOT NULL,
   `tempat_lahir` varchar(20) NOT NULL,
   `tanggal_lahir` date NOT NULL,
   `email` varchar(50) NOT NULL,
   `alamat` varchar(50) NOT NULL,
-  `id_kelas` int(11) NOT NULL,
-  `jenis_kelamin` enum('Laki-laki','Perempuan') NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `id_kelas` int NOT NULL,
+  `jenis_kelamin` enum('Laki-laki','Perempuan') NOT NULL,
+  PRIMARY KEY (`id_siswa`),
+  KEY `fk_kelas` (`id_kelas`),
+  KEY `fk_id` (`id`),
+  CONSTRAINT `fk_id` FOREIGN KEY (`id`) REFERENCES `user` (`id`),
+  CONSTRAINT `fk_kelas` FOREIGN KEY (`id_kelas`) REFERENCES `kelas` (`id_kelas`)
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
---
--- Dumping data untuk tabel `siswa`
---
-
-INSERT INTO `siswa` (`id_siswa`, `id`, `nis`, `nama_lengkap`, `tempat_lahir`, `tanggal_lahir`, `email`, `alamat`, `id_kelas`, `jenis_kelamin`) VALUES
-(12, 8, '10020', 'I Putu Aris Sanjaya', 'sdfsdf', '2021-12-05', 'bemr.do@gmail.com', 'Jl. Katrangan Gg. leli No. 5, Ds. Sumerta, Kec. De', 1, 'Laki-laki');
-
--- --------------------------------------------------------
-
---
--- Struktur dari tabel `user`
---
-
+DROP TABLE IF EXISTS `user`;
 CREATE TABLE `user` (
-  `id` int(11) NOT NULL,
+  `id` int NOT NULL AUTO_INCREMENT,
   `username` varchar(255) NOT NULL,
   `password` varchar(255) NOT NULL,
+  `nama` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
   `email` varchar(255) NOT NULL,
   `level` enum('admin','guru','siswa') NOT NULL,
-  `blokir` enum('N','Y') NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+  `blokir` enum('N','Y') NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `username` (`username`)
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
---
--- Dumping data untuk tabel `user`
---
 
-INSERT INTO `user` (`id`, `username`, `password`, `email`, `level`, `blokir`) VALUES
-(1, 'admin', '21232f297a57a5a743894a0e4a801fc3', 'admin@gmail.com', 'admin', 'N'),
-(8, 'admisdfas', '5e64fe04bfd8363b6c74ea86f5c867f1', 'bemr.do@gmail.com', 'siswa', 'N');
 
---
--- Indexes for dumped tables
---
 
---
--- Indeks untuk tabel `guru`
---
-ALTER TABLE `guru`
-  ADD PRIMARY KEY (`id_guru`),
-  ADD KEY `fk_mapel` (`id_pelajaran`),
-  ADD KEY `fk_kelas` (`id_kelas`) USING BTREE;
 
---
--- Indeks untuk tabel `kelas`
---
-ALTER TABLE `kelas`
-  ADD PRIMARY KEY (`id_kelas`),
-  ADD UNIQUE KEY `kode_kelas` (`kode_kelas`);
+INSERT INTO `kelas` (`id_kelas`, `kode_kelas`, `nama_kelas`) VALUES
+(1, '12', 'IPA');
+INSERT INTO `kelas` (`id_kelas`, `kode_kelas`, `nama_kelas`) VALUES
+(2, '13', 'IPS');
 
---
--- Indeks untuk tabel `mata_pelajaran`
---
-ALTER TABLE `mata_pelajaran`
-  ADD PRIMARY KEY (`id_pelajaran`);
 
---
--- Indeks untuk tabel `siswa`
---
-ALTER TABLE `siswa`
-  ADD PRIMARY KEY (`id_siswa`),
-  ADD KEY `fk_kelas` (`id_kelas`),
-  ADD KEY `fk_id` (`id`);
+INSERT INTO `mata_pelajaran` (`id_pelajaran`, `nama_pelajaran`, `keterangan`) VALUES
+(3, 'ipa', 'aktif');
+INSERT INTO `mata_pelajaran` (`id_pelajaran`, `nama_pelajaran`, `keterangan`) VALUES
+(4, 'ips', 'nonaktif');
 
---
--- Indeks untuk tabel `user`
---
-ALTER TABLE `user`
-  ADD PRIMARY KEY (`id`),
-  ADD UNIQUE KEY `username` (`username`);
 
---
--- AUTO_INCREMENT untuk tabel yang dibuang
---
+INSERT INTO `siswa` (`id_siswa`, `id`, `nis`, `nama_lengkap`, `tempat_lahir`, `tanggal_lahir`, `email`, `alamat`, `id_kelas`, `jenis_kelamin`) VALUES
+(12, 8, '10020', 'I Putu Aris Sanjaya', 'Tukadaya', '2021-12-05', 'bemr.do@gmail.com', 'Jl. Katrangan Gg. leli No. 5, Ds. Sumerta, Kec. De', 1, 'Laki-laki');
 
---
--- AUTO_INCREMENT untuk tabel `guru`
---
-ALTER TABLE `guru`
-  MODIFY `id_guru` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
---
--- AUTO_INCREMENT untuk tabel `kelas`
---
-ALTER TABLE `kelas`
-  MODIFY `id_kelas` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+INSERT INTO `user` (`id`, `username`, `password`, `nama`, `email`, `level`, `blokir`) VALUES
+(1, 'admin', '21232f297a57a5a743894a0e4a801fc3', 'Admin', 'admin@gmail.com', 'admin', 'N');
+INSERT INTO `user` (`id`, `username`, `password`, `nama`, `email`, `level`, `blokir`) VALUES
+(8, 'admisdfas', '81dc9bdb52d04dc20036dbd8313ed055', 'I Putu Aris Sanjaya', 'bemr.do@gmail.com', 'admin', 'Y');
 
---
--- AUTO_INCREMENT untuk tabel `mata_pelajaran`
---
-ALTER TABLE `mata_pelajaran`
-  MODIFY `id_pelajaran` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
---
--- AUTO_INCREMENT untuk tabel `siswa`
---
-ALTER TABLE `siswa`
-  MODIFY `id_siswa` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
---
--- AUTO_INCREMENT untuk tabel `user`
---
-ALTER TABLE `user`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
-
---
--- Ketidakleluasaan untuk tabel pelimpahan (Dumped Tables)
---
-
---
--- Ketidakleluasaan untuk tabel `guru`
---
-ALTER TABLE `guru`
-  ADD CONSTRAINT `fk_mapel` FOREIGN KEY (`id_pelajaran`) REFERENCES `mata_pelajaran` (`id_pelajaran`);
-
---
--- Ketidakleluasaan untuk tabel `siswa`
---
-ALTER TABLE `siswa`
-  ADD CONSTRAINT `fk_id` FOREIGN KEY (`id`) REFERENCES `user` (`id`),
-  ADD CONSTRAINT `fk_kelas` FOREIGN KEY (`id_kelas`) REFERENCES `kelas` (`id_kelas`);
-COMMIT;
-
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;

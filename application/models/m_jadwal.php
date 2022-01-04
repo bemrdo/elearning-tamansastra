@@ -1,8 +1,9 @@
 <?php
 class M_jadwal extends CI_Model
 {
-  public function tampil_data()
+  public function tampil_data($id)
   {
+    $this->db->where('id_kelas', $id);
     return $this->db->get('jadwal');
   }
 

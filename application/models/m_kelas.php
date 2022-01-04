@@ -9,6 +9,7 @@ class M_kelas extends CI_Model
   public function tambah_kelas($data)
   {
     $this->db->insert('kelas', $data);
+    return $this->db->insert_id();
   }
 
   public function ambil_data($id)

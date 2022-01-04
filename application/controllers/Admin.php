@@ -45,7 +45,19 @@ class Admin extends CI_Controller
       'nama_kelas' => $nama_kelas
     );
 
-    $this->m_kelas->tambah_kelas($data);
+    $id_kelas = $this->m_kelas->tambah_kelas($data);
+    $hari = array('Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat');
+    $jam = array('08.00 - 09.00', '09.00 - 10.00', '10.00 - 11.00', '11.00 - 12.00');
+    foreach ($hari as $hr) {
+      foreach ($jam as $jm) {
+        $jadwal = array (
+          'hari' => $hr,
+          'jam' => $jm,
+          'id_kelas' => $id_kelas
+        );
+        $this->m_jadwal->tambah_jadwal($jadwal);
+      }
+    }
     redirect('admin/kelas');
   }
 
@@ -337,7 +349,7 @@ class Admin extends CI_Controller
     $id_kelas = $this->input->post('id_kelas');
     $data['pilih_kelas'] = $this->m_kelas->ambil_data($id_kelas)->result()[0];
     $data['kelas'] = $this->m_kelas->tampil_data()->result();
-    $data['jadwal'] = $this->m_jadwal->tampil_data()->result();
+    $data['jadwal'] = $this->m_jadwal->tampil_data($id_kelas)->result();
     $data['mapel'] = $this->m_mapel->tampil_data()->result();
     $data['guru'] = $this->m_guru->tampil_data()->result();
     $data['edit'] = $this->m_jadwal->ambil_data($id_kelas)->result();
